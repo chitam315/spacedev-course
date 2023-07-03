@@ -1,4 +1,3 @@
-import { useState } from "react"
 /**
  * 
  * 
@@ -26,13 +25,17 @@ export const validate = (rules, form) => {
         phone: /(84|0[3|5|7|8|9])+([0-9]{8})\b/,
         email: /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/,
         website: /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
-        facebook: /(?:https?:\/\/)?(?:www\.)?(mbasic.facebook|m\.facebook|facebook|fb)\.(com|me)\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/
+        facebook: /(?:https?:\/\/)?(?:www\.)?(mbasic.facebook|m\.facebook|facebook|fb)\.(com|me)\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/,
+        concurrency: /^\d{1,3}(?:\.\d{3})*(?:,\d+)?\s+vnd$/i
     }
     for (const name in rules) {
         for (const rule of rules[name]) {
 
-            if (rule.require && !form[name]?.trim()) {
-                errObj[name] = rule.message || messageError.require
+            if (rule.require ) {
+                if ((typeof form[name] != 'boolean' && !form[name]?.trim()) || (typeof form[name] == 'boolean' && !form[name])) {
+                    errObj[name] = rule.message || messageError.require
+                    break
+                }
             }
 
             if (form[name] && rule.regex) {

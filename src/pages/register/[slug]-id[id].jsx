@@ -1,6 +1,13 @@
-import React from 'react'
+import { useAuth } from '@/components/AuthContext'
+import { Checkbox } from '@/components/Checkbox'
+import { Select } from '@/components/Select'
+import { PATH } from '@/config/PATH'
+import { useAsync } from '@/hooks/useAsync'
+import { required } from '@/utils/validate'
+import { message } from 'antd'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import Field from '../../components/Field'
 import { useForm } from '../../hooks/useForm'
 import { useScrollTop } from '../../hooks/useScrollTop'
@@ -9,9 +16,16 @@ import { currency } from '../../utils/currency'
 
 export default function Register() {
     const [isSuccess, setIsSuccess] = useState(false)
-
+    const {user} = useAuth()
+    const navigate = useNavigate()
     useScrollTop()
 
+    useEffect(() => {
+        if(!user){
+            message.warning("You need to log in")
+            navigate(PATH.signin)
+        }
+    })
     const { id } = useParams()
 
     const [detail, setDetail] = useState(() => {
@@ -34,10 +48,16 @@ export default function Register() {
             { require: true, message: "Facebook không được để trống" },
             { regex: 'facebook', message: "Sai định dạng facebook" }
         ],
-        opinion: [],
+        payment: [
+            required()
+        ],
+        coin: [
+            // required()
+        ],
+        opinion: []
     }
 
-    const { register, validate, values, setValuesForm } = useForm(rules)
+    const { register, validate, values, setValueSelectInForm, errors } = useForm(rules)
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -46,6 +66,7 @@ export default function Register() {
             setIsSuccess(true)
         } else {
             console.log('validate fail');
+            console.log(values, errors);
         }
     }
     console.log('re-render');
@@ -102,28 +123,32 @@ export default function Register() {
                                         {...register("facebook")}
                                     />
                                     <Field
-                                    label="Sử dụng COIN"
-                                    renderInput= { (_,props) => (
-                                        <div className="checkcontainer">
-                                            Hiện có <strong>300 COIN</strong>
-                                            {/* Giảm giá còn <span><strong>5.800.000 VND</strong>, còn lại 100 COIN</span> */}
-                                            {/* Cần ít nhất 200 COIN để giảm giá */}
-                                            <input type="checkbox" /*defaultChecked="checked"*/  />
-                                            <span className="checkmark" />
-                                        </div>
-                                    )}
+                                        label="Sử dụng COIN"
+                                        {...register('coin')}
+                                        renderInput={(_, props) => (
+                                            <Checkbox
+                                                {...props}
+                                            >
+                                                Hiện có <strong>300 COIN</strong>
+                                            </Checkbox>
+                                        )}
                                     />
-                                    
-                                    <label>
-                                        <p>Hình thức thanh toán</p>
-                                        <div className="select">
-                                            <div className="head">Chuyển khoản</div>
-                                            <div className="sub">
-                                                <a href="#">Chuyển khoản</a>
-                                                <a href="#">Thanh toán tiền mặt</a>
-                                            </div>
-                                        </div>
-                                    </label>
+                                    <Field
+                                        label="Hình thức thanh toán"
+                                        {...register('payment')}
+                                        renderInput={(error, props) => (
+                                            <Select
+                                                {...props}
+                                                error={error}
+                                                placeholder={"Hình thức thanh toán"}
+                                                option={[
+                                                    { value: "chuyen-khoan", label: "Chuyển khoản" },
+                                                    { value: "thanh-toan-tien-mat", label: "Thanh toán tiền mặt" }
+                                                ]}
+                                            />
+                                        )}
+                                    />
+
                                     <Field
                                         label="Ý kiến cá nhân"
                                         placeholder="Mong muốn cá nhân và lịch bạn có thể học."

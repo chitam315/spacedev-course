@@ -7,25 +7,36 @@ import { validate } from "../utils/validate";
  * @return values, error, register, validate
  */
 export const useForm = (rules) => {
-    const [valuesForm,setValuesForm] = useState({});
-    const [errors,setError] = useState({});
+    const [valuesForm, setValuesForm] = useState({});
+    const [errors, setError] = useState({});
 
     const register = (name) => {
         return {
             value: valuesForm[name] || '',
-            onChange: ev => {
-                console.log(valuesForm);
-                console.log('not yet set value');
+            onChange: (ev) => {
                 setValuesForm({ ...valuesForm, [name]: ev.target.value })
-                console.log(valuesForm);
-                console.log('set value');
+                // setError(validate(rules,{ ...valuesForm, [name]: ev.target.value }))
+                setError(
+                    validate(
+                        {
+                            [name]: rules[name]
+                        },
+                        {
+                            [name]: ev.target.value
+                        }
+                    )
+                )
             },
             error: errors[name]
         }
     }
 
+    const setValueSelectInForm = (name, valueOfSelect) => {
+        setValuesForm({ ...valuesForm, [name]: valueOfSelect })
+    }
+
     const _validate = () => {
-        const errObject = validate(rules,valuesForm)
+        const errObject = validate(rules, valuesForm)
         setError(errObject)
         return Object.keys(errObject).length === 0
     }
@@ -34,5 +45,5 @@ export const useForm = (rules) => {
         setValuesForm({})
     }
 
-return {values: valuesForm,errors,register,validate: _validate,resetValue,setValuesForm}
+    return { values: valuesForm, errors, register, validate: _validate, resetValue, setValuesForm, setValueSelectInForm }
 }

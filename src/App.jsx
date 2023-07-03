@@ -7,49 +7,6 @@ import './assets/css/custom.css'
 
 function App() {
 
-  // const [listJob, setListJob] = useState(() => {
-  //   const temp = JSON.parse(window.localStorage.getItem('listJob'))
-  //   if (temp) {
-  //     return temp
-  //   } else {
-  //     return new Array(0)
-  //   }
-  // })
-
-  // useEffect(() => {
-  //   window.localStorage.setItem('listJob', JSON.stringify(listJob))
-  // }, [listJob])
-
-  // const onAdd = (value) => {
-  //   const newTask = {
-  //     id: listJob.length + 1,
-  //     name: value,
-  //     isCompleted: false,
-  //   }
-  //   setListJob([...listJob, newTask])
-  // }
-
-  // const changeStatus = (id) => {
-  //   listJob.find(ele => ele.id == id).isCompleted = !(listJob.find(ele => ele.id == id).isCompleted);
-  //   setListJob([...listJob])
-  // }
-
-  // const removeItem = (_id) => {
-  //   console.log('remove item');
-  //   var ind;
-  //   listJob.find((ele, index) => {
-  //     ind = index;
-  //     return ele.id === _id
-  //   })
-  //   listJob.splice(ind, 1)
-  //   setListJob([...listJob])
-  // }
-
-  // const clearTask = () => {
-  //   window.localStorage.removeItem('listJob');
-  //   setListJob([])
-  // }
-
   const element = useRoutes(routes)
   return (
     // <>

@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react'
 import styled from 'styled-components'
 
-const ErrorStyled = styled.span`
+export const ErrorStyled = styled.span`
     color: red;
     font-size: 0.8rem;
     position: absolute;

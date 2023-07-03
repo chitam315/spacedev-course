@@ -5,6 +5,7 @@ import Skeleton from '../Skeleton'
 
 export default function CourseCard({ id, short_description, slug, title, thumbnailUrl }) {
     const path = generatePath(PATH.course_detail, { slug, id })
+    const registerPath = generatePath(PATH.register, { slug, id })
 
     return (
         <div className="col-md-4 course">
@@ -23,7 +24,8 @@ export default function CourseCard({ id, short_description, slug, title, thumbna
                         </div>
                         <div className="name">Vương Đặng</div>
                     </div>
-                    <a href="/register.html" className="register-btn">Đăng Ký</a>
+                    {/* <a href="/register.html" className="register-btn">Đăng Ký</a> */}
+                    <Link className="register-btn" to={registerPath}>Đăng Ký</Link>
                 </div>
             </div>
         </div>

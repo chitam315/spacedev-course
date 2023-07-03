@@ -16,6 +16,10 @@ export default function ListCourse({ limit }) {
         var { data: courses, loading } = useFetch(courseService.getCourses)
     }
 
+    if (!loading) {
+        console.log(courses);
+    }
+
     return (
         <section className="section-1">
             <div className="container">

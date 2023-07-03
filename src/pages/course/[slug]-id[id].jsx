@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { generatePath, Link, useParams } from 'react-router-dom'
 import moment from 'moment';
 
@@ -33,6 +33,10 @@ export default function CourseDetail() {
     useScrollTop([id])
 
     var openingTime = ""
+
+    if (!loading) {
+        openingTime = moment(detail.data.opening_time).format('DD/MM/YYYY')
+    }
 
     return (
         loading ?
@@ -134,9 +138,6 @@ export default function CourseDetail() {
             detail.data == null ?
                 <Page404 /> :
                 <main className="course-detail" id="main">
-                    {
-                        openingTime = moment(detail.data.opening_time).format('DD/MM/YYYY')
-                    }
                     <section className="banner style2" style={{ '--background': detail.data.template_color_banner || '#cde6fb' }}>
                         <div className="container">
                             <div className="info">
